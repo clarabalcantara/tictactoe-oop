@@ -37,7 +37,7 @@ public class JogoDaVelha {
          if (posicao <0||posicao >= 9) return; //fora do limtie
          if (!celulas[posicao].equals("")) return; // já está ocupada (basica)
 
-         String simbolo = simbolos[numeroJogador]; // x ou bola
+         String simbolo = getSimbolo() // x ou bola
          celulas[posicao] = simbolo; // nova atribuição ao elem.da poscuao
          historico.put(posicao, simbolo);
          quantidadeJogadas++;
@@ -45,24 +45,51 @@ public class JogoDaVelha {
     public void jogaMaquina() {} // maquina !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     public boolean terminou() {
-        return (getResultado() != -1)||(quantidadeJogadas == 9) ; //ganhou ou empate
+        return (getResultado() != -1)||(quantidadeJogadas == 9) ; //se nao houve ganho ou empate
     }
 
     public int getResultado() {
-        // pra nao usar matriz....
-        int[] vitoriaLinha1 = {0, 1, 2};
-        int[] vitoriaLinha2 = {3, 4, 5};
-        int[] vitoriaLinha3 = {6, 7, 8};
-        int[] vitoriaColuna1 = {0, 3, 6};
-        int[] vitoriaColuna2 = {1, 4, 7};
-        int[] vitoriaColuna3 = {2, 5, 8};
-        int[] vitoriaDiagonal1 = {0, 4, 8};
-        int[] vitoriaDiagonal2 = {2, 4, 6};
+        // pra nao usar matriz...
+        // ia fazer um 8 listas mas com esse tanto de if acho q seria mais eficiente do que ter que criar arrau
+         /*
+         0 1 2
+         3 4 5
+         6 7 8
+          */
+        // verificações por linha/coluna/diagonal - n sei se esse tanto de if seria a melhor forma alvez uma funcao seria melhrp
+        // supor q simbolo1 = X so p eu testar mentalmente
+        if (celulas[0] != "" && celulas[0].equals(celulas[1]) && celulas[0].equals(celulas[2]))
+            return celulas[0].equals(simbolos[0]) ? 1:2; // se X = X == Jogador 1 vence se nao Joagdor 2
+        if (celulas[3] != "" && celulas[3].equals(celulas[4]) && celulas[3].equals(celulas[5]))
+            return celulas[3].equals(simbolos[0]) ? 1:2;
+        if (celulas[6] != "" && celulas[6].equals(celulas[7]) && celulas[6].equals(celulas[8]))
+            return celulas[6].equals(simbolos[0]) ? 1:2;
+
+        if (celulas[0] != "" && celulas[0].equals(celulas[3]) && celulas[0].equals(celulas[6]))
+            return celulas[0].equals(simbolos[0]) ? 1:2;
+        if (celulas[1] != "" && celulas[1].equals(celulas[4]) && celulas[1].equals(celulas[7]))
+            return celulas[1].equals(simbolos[0]) ? 1:2;
+        if (celulas[2] != "" && celulas[2].equals(celulas[5]) && celulas[2].equals(celulas[8]))
+            return celulas[2].equals(simbolos[0]) ? 1:2;
+
+        if (celulas[0] != "" && celulas[0].equals(celulas[4]) && celulas[0].equals(celulas[8]))
+            return celulas[0].equals(simbolos[0]) ? 1:2;
+        if (celulas[2] != "" && celulas[2].equals(celulas[4]) && celulas[2].equals(celulas[6]))
+            return celulas[2].equals(simbolos[0]) ? 1:2;
+        // empate
+        if (quantidadeJogadas == 9)
+            return 0;
+        // ainda n t erminou
+        return -1;
     }
 
-    public String getSimbolo(int numeroJogador) {}
 
+    public String getSimbolo(int numeroJogador) {
+        return simbolos[numeroJogador];
+    }
+    // classe stringbuilder eu nao conhecia
     public String getFoto() {}
+
 
     public ArrayList<Integer> getPosicoesDisponiveis() {}
 
