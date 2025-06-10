@@ -82,17 +82,41 @@ public class JogoDaVelha {
         // ainda n t erminou
         return -1;
     }
-
-
     public String getSimbolo(int numeroJogador) {
         return simbolos[numeroJogador];
     }
     // classe stringbuilder eu nao conhecia
-    public String getFoto() {}
-
-
-    public ArrayList<Integer> getPosicoesDisponiveis() {}
-
-    public LinkedHashMap<Integer, String> getHistorico() {}
-
+    public String getFoto() {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<9; i++) {
+            sb.append(celulas[i] == "" ? " " : celulas[i]);
+            if ((i+1) %3 == 0) { // 1 - 3 - 9
+                sb.append("\n");
+            } else {
+                sb.append(" | ");
+            }
         }
+        return sb.toString(); // tinha esquecido de converter p strig pq sao dois tipos difernetss
+    }
+
+
+
+    public ArrayList<Integer> getPosicoesDisponiveis() {
+        ArrayList<Integer> livres = new ArrayList<>();
+        for (int i = 0; i < celulas.length; i++) {
+            if (celulas[i] == "") {
+                livres.add(i);
+            }
+        }
+        return livres;
+    }
+
+// acho q poderia usar stringbuilder aqui tbm mas vou no simples dessa vez
+    public String exibirHistorico() {
+        String resultado = "";
+        // pcada input do mapa historico, get a key e o value
+        for (var entrada : historico.entrySet()) { // p cada entrada um par posicao e valor
+            resultado += "Posição " + entrada.getKey() + ": " + entrada.getValue() + "\n";
+        }
+        return resultado;
+    }
