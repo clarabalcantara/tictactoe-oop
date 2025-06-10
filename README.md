@@ -13,7 +13,7 @@
 |                             | `historico` histórico das jogadas realizadas (posição, símbolo)                          |
 |                             | `quantidadeJogadas` contador de jogadas feitas                                           |
 |                             | `contraMaquina` indica se o jogo é contra a máquina                                      |
-|                             | `nivelEsperteza` nível de dificuldade da máquina (1 || 2)                                |
+|                             | `nivelEsperteza` nível de dificuldade da máquina (1,2)                                |
 | **construtores**              | `JogoDaVelha(String simbolo1, String simbolo2)` inicializa jogo para 2 jogadores          |
 |                             | `JogoDaVelha(String nomeJogador1, int nivel)` inicializa jogo contra máquina com nível    |
 | **métodos públicos**          | `jogaJogador(int numeroJogador, int posicao)` valida e efetua a jogada do jogador        |
