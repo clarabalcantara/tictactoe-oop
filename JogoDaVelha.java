@@ -39,7 +39,7 @@ public class JogoDaVelha {
          if (posicao <0||posicao >= 9) return; //fora do limtie
          if (!celulas[posicao].equals("")) return; // já está ocupada (basica)
 
-         String simbolo = getSimbolo() // x ou bola
+         String simbolo = getSimbolo(numeroJogador); // x ou bola
          celulas[posicao] = simbolo; // nova atribuição ao elem.da poscuao
          historico.put(posicao, simbolo);
          quantidadeJogadas++;
@@ -91,7 +91,7 @@ public class JogoDaVelha {
     public String getFoto() {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<9; i++) {
-            sb.append(celulas[i] == "" ? " " : celulas[i]);
+            sb.append(celulas[i].equals("") ? " " : celulas[i]);
             if ((i+1) %3 == 0) { // 1 - 3 - 9
                 sb.append("\n");
             } else {
@@ -106,7 +106,7 @@ public class JogoDaVelha {
     public ArrayList<Integer> getPosicoesDisponiveis() {
         ArrayList<Integer> livres = new ArrayList<>();
         for (int i = 0; i < celulas.length; i++) {
-            if (celulas[i] == "") {
+            if (celulas[i].equals(" ")) {
                 livres.add(i);
             }
         }
