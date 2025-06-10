@@ -13,6 +13,8 @@ o que eu preciso saber no joog (def. atributos) -> encapsulados (private)
 */
 
 // vence quando = 012, 345, 678, 036, 147, 258, 048 e 246
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 public class JogoDaVelha {
     private String[] celulas = new String[9]; // 3x3
     private String[] simbolos = new String[2]; // X ou bola
