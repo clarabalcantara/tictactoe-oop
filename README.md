@@ -4,7 +4,7 @@
 - Clara Brito P. N. Alcântara - clara.alcantara@academico.ifpb.edu.br
 - Davi César M. Leite - davi.cesar@academico.ifpb.edu.br
 
-## ➡️ Visão Geral da Estrutura da Classe JogoDaVelha (em construção: 🚧)
+## ➡️ Visão Geral da Estrutura da Classe JogoDaVelha (em 🚧)
 | Arquivo / Classe             | Descrição                                                                                  |
 |-----------------------------|--------------------------------------------------------------------------------------------|
 | **JogoDaVelha.java**          | Classe principal que controla o fluxo do jogo, tabuleiro, símbolos, jogadas e resultado     |
