@@ -19,35 +19,52 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class JogoDaVelha {
-	private String[] celulas = new String[9]; // 3x3
-	private String[] simbolos = new String[2]; // X ou bola
-	private LinkedHashMap<Integer, String> historico = new LinkedHashMap<>(); // quais jogadas foram
-	private int quantidadeJogadas = 0; // se == 9 : empate
+	private Character[] celulas = new Character[9]; // 3x3
+	private Character[] simbolos = new Character[2]; // X ou bola
+	private LinkedHashMap<Integer, Character> historico = new LinkedHashMap<>(); // quais jogadas foram
+	private byte quantidadeJogadas = 0; // se == 9 : empate
 	private boolean contraMaquina;
-	private int nivelEsperteza; // 1 ou 2
+	private byte nivelEsperteza; // 1 ou 2
 
-	public JogoDaVelha(String simbolo1, String simbolo2) { // construtor jxj
+	public JogoDaVelha(Character simbolo1, Character simbolo2) { // construtor jxj
+		if (simbolo1 == ' ' || simbolo2 == ' ') {
+			throw new IllegalArgumentException("Símbolos não podem ser espaços em branco.");
+		}
 		this.simbolos[0] = simbolo1; this.simbolos[1] = simbolo2;
 		this.contraMaquina = false;
 		// iniciar tabuleiro p poder ficar acrecentando os simbolos nas posições
-		for (int i=0; i<9; i++){
-			this.celulas[i] = "";// ai if ( celulas[posicao].equals("")) == true = livre
-		}
+		iniciarTabuleiro();
 	}
-	public JogoDaVelha(String nomeJogador1, int nivel) { } // consturo mxj !!!!!!!!!!!!!!!!!!
+	
+	public JogoDaVelha(String nomeJogador1, byte nivel) {
+		this.simbolos[0] = 'X'; this.simbolos[1] = 'O';
+		this.contraMaquina = true;
+		this.nivelEsperteza = nivel;
+		iniciarTabuleiro();
+	} // consturo mxj !!!!!!!!!!!!!!!!!!
+		
 
+	private void iniciarTabuleiro() {
+		for (int i = 0; i < 9; i++) this.celulas[i] = ' ';
+	}
+	
 	public void jogaJogador(int numeroJogador, int posicao) {
 		// numerojogador é o indice da lista la do simbolo p acessar x ou bola
+		if (contraMaquina) numeroJogador = 0;
+		numeroJogador--;
 		if (numeroJogador < 0||numeroJogador > 1) return; // casos estranhos
 		if (posicao <0||posicao >= 9) return; //fora do limtie
-		if (!celulas[posicao].equals("")) return; // já está ocupada (basica)
+		if (!(celulas[posicao] == ' ')) return; // já está ocupada (basica) OBS: retornar um erro
 
-		String simbolo = getSimbolo(numeroJogador); // x ou bola
+		Character simbolo = getSimbolo(numeroJogador); // x ou bola
 		celulas[posicao] = simbolo; // nova atribuição ao elem.da poscuao
 		historico.put(posicao, simbolo);
 		quantidadeJogadas++;
 	}
-	public void jogaMaquina() {} // maquina !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	public void jogaMaquina() {
+		
+	} // maquina !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	public boolean terminou() {
 		return (getResultado() != -1)||(quantidadeJogadas == 9) ; //se nao houve ganho ou empate
@@ -56,45 +73,49 @@ public class JogoDaVelha {
 	public int getResultado() {
 		// pra nao usar matriz...
 		// ia fazer um 8 listas mas com esse tanto de if acho q seria mais eficiente do que ter que criar arrau
-		/*
-      0 1 2
-      3 4 5
-      6 7 8
-		 */
+			/*
+	      0 1 2
+	      3 4 5
+	      6 7 8
+			 */
 		// verificações por linha/coluna/diagonal - n sei se esse tanto de if seria a melhor forma alvez uma funcao seria melhrp
 		// supor q simbolo1 = X so p eu testar mentalmente
-		if (celulas[0] != "" && celulas[0].equals(celulas[1]) && celulas[0].equals(celulas[2]))
-			return celulas[0].equals(simbolos[0]) ? 1:2; // se X = X == Jogador 1 vence se nao Joagdor 2
-		if (celulas[3] != "" && celulas[3].equals(celulas[4]) && celulas[3].equals(celulas[5]))
-			return celulas[3].equals(simbolos[0]) ? 1:2;
-		if (celulas[6] != "" && celulas[6].equals(celulas[7]) && celulas[6].equals(celulas[8]))
-			return celulas[6].equals(simbolos[0]) ? 1:2;
+		if (celulas[0] != ' ' && celulas[0] == celulas[1] && celulas[0] == celulas[2]) {
+			System.out.println("entrou aqui");
+			return celulas[0] == simbolos[0] ? 1:2; // se X = X == Jogador 1 vence se nao Joagdor 2
+		}
+		if (celulas[3] != ' ' && celulas[3] == celulas[4] && celulas[3] == celulas[5])
+			return celulas[3] == simbolos[0] ? 1:2;
+		if (celulas[6] != ' ' && celulas[6] == celulas[7] && celulas[6] == celulas[8])
+			return celulas[6] == simbolos[0] ? 1:2;
 
-		if (celulas[0] != "" && celulas[0].equals(celulas[3]) && celulas[0].equals(celulas[6]))
-			return celulas[0].equals(simbolos[0]) ? 1:2;
-		if (celulas[1] != "" && celulas[1].equals(celulas[4]) && celulas[1].equals(celulas[7]))
-			return celulas[1].equals(simbolos[0]) ? 1:2;
-		if (celulas[2] != "" && celulas[2].equals(celulas[5]) && celulas[2].equals(celulas[8]))
-			return celulas[2].equals(simbolos[0]) ? 1:2;
+		if (celulas[0] != ' ' && celulas[0] == celulas[3] && celulas[0] == celulas[6])
+			return celulas[0] == simbolos[0] ? 1:2;
+		if (celulas[1] != ' ' && celulas[1] == celulas[4] && celulas[1] == celulas[7])
+			return celulas[1] == simbolos[0] ? 1:2;
+		if (celulas[2] != ' ' && celulas[2] == celulas[5] && celulas[2] == celulas[8])
+			return celulas[2] == simbolos[0] ? 1:2;
 
-		if (celulas[0] != "" && celulas[0].equals(celulas[4]) && celulas[0].equals(celulas[8]))
-			return celulas[0].equals(simbolos[0]) ? 1:2;
-		if (celulas[2] != "" && celulas[2].equals(celulas[4]) && celulas[2].equals(celulas[6]))
-			return celulas[2].equals(simbolos[0]) ? 1:2;
+		if (celulas[0] != ' ' && celulas[0] == celulas[4] && celulas[0] == celulas[8])
+			return celulas[0] == simbolos[0] ? 1:2;
+		if (celulas[2] != ' ' && celulas[2] == celulas[4] && celulas[2] == celulas[6])
+			return celulas[2] == simbolos[0] ? 1:2;
 		// empate
 		if (quantidadeJogadas == 9)
 			return 0;
 		// ainda n t erminou
 		return -1;
 	}
-	public String getSimbolo(int numeroJogador) {
+	
+	private Character getSimbolo(int numeroJogador) {
 		return simbolos[numeroJogador];
 	}
+	
 	// classe stringbuilder eu nao conhecia
 	public String getFoto() {
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<9; i++) {
-			sb.append(celulas[i].equals("") ? " " : celulas[i]);
+			sb.append(celulas[i] == ' ' ? ' ' : celulas[i]);
 			if ((i+1) %3 == 0) { // 1 - 3 - 9
 				sb.append("\n");
 			} else {
@@ -109,7 +130,7 @@ public class JogoDaVelha {
 	public ArrayList<Integer> getPosicoesDisponiveis() {
 		ArrayList<Integer> livres = new ArrayList<>();
 		for (int i = 0; i < celulas.length; i++) {
-			if (celulas[i].equals(" ")) {
+			if (celulas[i] == ' ') {
 				livres.add(i);
 			}
 		}
