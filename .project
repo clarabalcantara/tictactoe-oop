@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+    <name>tictactoe-oop</name> <!-- Nome do seu projeto -->
+    <comment></comment>
+    <projects/>
+    <buildSpec>
+        <buildCommand>
+            <name>org.eclipse.jdt.core.javabuilder</name> <!-- Para compilar código Java -->
+            <arguments/>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.wb.core.java.beanbuilder</name> <!-- Necessário para o WindowBuilder -->
+            <arguments/>
+        </buildCommand>
+    </buildSpec>
+    <natures>
+        <nature>org.eclipse.jdt.core.javanature</nature> <!-- Natureza Java -->
+        <nature>org.eclipse.wb.core.windowBuilderNature</nature> <!-- Natureza do WindowBuilder -->
+    </natures>
+</projectDescription>
