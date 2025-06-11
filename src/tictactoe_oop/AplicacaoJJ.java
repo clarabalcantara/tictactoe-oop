@@ -57,7 +57,7 @@ public class AplicacaoJJ extends JFrame {
         contentPane.add(header);
 
         replayBtn.setBounds(210, 14, 154, 33);
-        replayBtn.setFont(new Font("Monospaced", Font.BOLD, 16));
+        replayBtn.setFont(new Font("Arial", Font.BOLD, 16));
         replayBtn.setBackground(new Color(220, 138, 221));
         replayBtn.setForeground(Color.WHITE);
         replayBtn.setEnabled(false);
@@ -67,7 +67,7 @@ public class AplicacaoJJ extends JFrame {
 
         jogandoLbl.setBackground(new Color(192, 97, 203));
         jogandoLbl.setForeground(Color.WHITE);
-        jogandoLbl.setFont(new Font("Monospaced", Font.BOLD, 16));
+        jogandoLbl.setFont(new Font("Arial", Font.BOLD, 16));
         jogandoLbl.setBounds(12, 22, 180, 17);
         header.add(jogandoLbl);
     }
@@ -85,7 +85,7 @@ public class AplicacaoJJ extends JFrame {
 
     private JButton criarBotao(int idx) {
         JButton btn = new JButton("");
-        btn.setFont(new Font("Monospaced", Font.BOLD, 48));
+        btn.setFont(new Font("Arial", Font.BOLD, 48));
         btn.setBackground(new Color(220, 138, 221));
         btn.setForeground(Color.WHITE);
         botoes[idx] = btn;

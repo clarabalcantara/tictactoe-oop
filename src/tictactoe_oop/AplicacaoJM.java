@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,7 +46,7 @@ public class AplicacaoJM extends JFrame {
 
     private String solicitarNomeJogador() {
         String nomeJogador = JOptionPane.showInputDialog("Qual o nome do jogador?");
-        if (nomeJogador == null) System.exit(0);
+        if (nomeJogador == null || nomeJogador.isBlank()) System.exit(0);
         return nomeJogador;
     }
 
@@ -87,7 +88,7 @@ public class AplicacaoJM extends JFrame {
         header.setLayout(null);
 
         replayBtn.setBounds(210, 14, 154, 33);
-        replayBtn.setFont(new Font("Monospaced", Font.BOLD, 16));
+        replayBtn.setFont(new Font("Arial", Font.BOLD, 16));
         replayBtn.setBackground(new Color(220, 138, 221));
         replayBtn.setForeground(Color.WHITE);
         replayBtn.setEnabled(false);
@@ -96,7 +97,7 @@ public class AplicacaoJM extends JFrame {
 
         jogandoLbl.setBackground(new Color(192, 97, 203));
         jogandoLbl.setForeground(Color.WHITE);
-        jogandoLbl.setFont(new Font("Monospaced", Font.BOLD, 16));
+        jogandoLbl.setFont(new Font("Arial", Font.BOLD, 16));
         jogandoLbl.setBounds(20, 22, 180, 17);
         header.add(jogandoLbl);
 
@@ -105,7 +106,7 @@ public class AplicacaoJM extends JFrame {
 
     private void configurarDificuldadeSlider(JPanel header) {
         JLabel dificuldadeLbl = new JLabel("Dificuldade: ");
-        dificuldadeLbl.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        dificuldadeLbl.setFont(new Font("Arial", Font.BOLD, 16));
         dificuldadeLbl.setForeground(Color.WHITE);
         dificuldadeLbl.setBounds(20, 70, 177, 25);
         header.add(dificuldadeLbl);
@@ -142,11 +143,11 @@ public class AplicacaoJM extends JFrame {
         btn.addActionListener(e -> {
             try {
                 preencherCelula(btn, idx);
+                if (verificarFimDeJogo()) return;
                 jogarMaquina();
-            } catch (Exception ex) {
-                System.out.println("Erro");
-            } finally {
                 verificarFimDeJogo();
+            } catch (Exception ex) {
+                System.out.println("Pode clicar na mesma celular n vei");
             }
         });
         return btn;
@@ -167,7 +168,7 @@ public class AplicacaoJM extends JFrame {
         }
     }
 
-    private void verificarFimDeJogo() {
+    private boolean verificarFimDeJogo() {
         if (!jogoDaVelha.isJogando()) {
             toggleBotoes();
             replayBtn.setEnabled(true);
@@ -178,7 +179,9 @@ public class AplicacaoJM extends JFrame {
                 default -> "Empate.";
             };
             jogandoLbl.setText(vencedor);
+            return true;
         }
+        return false;
     }
 
     private void toggleBotoes() {

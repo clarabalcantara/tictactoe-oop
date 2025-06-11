@@ -24,7 +24,7 @@ public class JogoDaVelha {
 
     public JogoDaVelha(String nomeJogador1, int nivel) {
         this.simbolos[0] = 'X';
-        this.simbolos[1] = 'O';
+        this.simbolos[1] = 'M';
         this.contraMaquina = true;
         this.nivelEsperteza = nivel;
         this.nomeJogador = nomeJogador1;
