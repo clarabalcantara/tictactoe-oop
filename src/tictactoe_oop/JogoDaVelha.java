@@ -22,54 +22,160 @@ public class JogoDaVelha {
 	private Character[] celulas = new Character[9]; // 3x3
 	private Character[] simbolos = new Character[2]; // X ou bola
 	private LinkedHashMap<Integer, Character> historico = new LinkedHashMap<>(); // quais jogadas foram
-	private byte quantidadeJogadas = 0; // se == 9 : empate
-	private boolean contraMaquina;
-	private byte nivelEsperteza; // 1 ou 2
+	private int quantidadeJogadas = 0; // se == 9 : empate
+	private boolean contraMaquina = false;
+	private boolean jogando = false;
+	private String nomeJogador;
+	private int nivelEsperteza; // 1 ou 2
 
 	public JogoDaVelha(Character simbolo1, Character simbolo2) { // construtor jxj
 		if (simbolo1 == ' ' || simbolo2 == ' ') {
 			throw new IllegalArgumentException("Símbolos não podem ser espaços em branco.");
 		}
 		this.simbolos[0] = simbolo1; this.simbolos[1] = simbolo2;
-		this.contraMaquina = false;
 		// iniciar tabuleiro p poder ficar acrecentando os simbolos nas posições
 		iniciarTabuleiro();
 	}
 	
-	public JogoDaVelha(String nomeJogador1, byte nivel) {
+	public JogoDaVelha(String nomeJogador1, int nivel) {
 		this.simbolos[0] = 'X'; this.simbolos[1] = 'O';
 		this.contraMaquina = true;
 		this.nivelEsperteza = nivel;
+		this.nomeJogador = nomeJogador1;
 		iniciarTabuleiro();
 	} // consturo mxj !!!!!!!!!!!!!!!!!!
 		
 
-	private void iniciarTabuleiro() {
-		for (int i = 0; i < 9; i++) this.celulas[i] = ' ';
+	public String getNomeJogador() throws Exception{
+		if (!contraMaquina) throw new Exception();
+		return this.nomeJogador;
 	}
 	
-	public void jogaJogador(int numeroJogador, int posicao) {
+	
+	public void jogarJogador(int posicao) throws Exception {
+		if (!contraMaquina) {
+			throw new Exception();
+		};
+		jogarJogador(1, posicao);
+	}
+	
+	public void jogarMaquina(int posicao) throws Exception {
+		if (!contraMaquina) {
+			throw new Exception();
+		};
+		jogarJogador(2, posicao);
+	} // maquina !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	
+	public void jogarJogador(int numeroJogador, int posicao) throws Exception {
 		// numerojogador é o indice da lista la do simbolo p acessar x ou bola
-		if (contraMaquina) numeroJogador = 0;
+		if (!isJogando()) jogando = true;
+
 		numeroJogador--;
 		if (numeroJogador < 0||numeroJogador > 1) return; // casos estranhos
 		if (posicao <0||posicao >= 9) return; //fora do limtie
-		if (!(celulas[posicao] == ' ')) return; // já está ocupada (basica) OBS: retornar um erro
+		if (!(celulas[posicao] == ' ')) {
+			throw new Exception("Ta ocupado"); // já está ocupada (basica) OBS: retornar um erro
+		}
 
 		Character simbolo = getSimbolo(numeroJogador); // x ou bola
 		celulas[posicao] = simbolo; // nova atribuição ao elem.da poscuao
 		historico.put(posicao, simbolo);
 		quantidadeJogadas++;
+		System.out.println(quantidadeJogadas);
+		if (terminou()) {
+			jogando = false;
+		}
 	}
 	
-	public void jogaMaquina() {
-		
-	} // maquina !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	public boolean terminou() {
-		return (getResultado() != -1)||(quantidadeJogadas == 9) ; //se nao houve ganho ou empate
+	public ArrayList<Integer> getPosicoesDisponiveis() {
+		ArrayList<Integer> livres = new ArrayList<>();
+		for (int i = 0; i < celulas.length; i++) {
+			if (celulas[i] == ' ') {
+				livres.add(i);
+			}
+		}
+		return livres;
 	}
 
+	//acho q poderia usar stringbuilder aqui tbm mas vou no simples dessa vez
+	public String exibirHistorico() {
+		String resultado = "";
+		// pcada input do mapa historico, get a key e o value
+		for (var entrada : historico.entrySet()) { // p cada entrada um par posicao e valor
+			resultado += "Posição " + entrada.getKey() + ": " + entrada.getValue() + "\n";
+		}
+		return resultado;
+	}
+	
+	public int maquinaEscolherPosicao() {
+		if (this.nivelEsperteza >= 2) {
+			return posicaoDificil();
+		} else {
+			return posicaoFacil();
+		}
+	}
+	
+	private int posicaoDificil() {
+	    ArrayList<Integer> livres = getPosicoesDisponiveis();
+	    Character simboloMaquina = simbolos[1];
+	    Character simboloJogador = simbolos[0];
+
+	    for (int pos : livres) {
+	        celulas[pos] = simboloMaquina;
+	        if (getResultado() == 2) { // 2 = máquina vence
+	            celulas[pos] = ' ';
+	            return pos;
+	        }
+	        celulas[pos] = ' ';
+	    }
+
+	    // Verificar se o jogador pode vencer na próxima, bloquear
+	    for (int pos : livres) {
+	        celulas[pos] = simboloJogador;
+	        System.out.println(getFoto());
+	        if (getResultado() == 1) { // 1 = jogador vence
+	            celulas[pos] = ' ';
+	            return pos;
+	        }
+	        celulas[pos] = ' ';
+	    }
+
+	    // Jogar no centro se disponível
+	    if (celulas[4] == ' ') return 4;
+
+	    // Jogar nos cantos se disponíveis
+	    int[] cantos = {0, 2, 6, 8};
+	    for (int canto : cantos) {
+	        if (celulas[canto] == ' ') return canto;
+	    }
+
+	    // Qualquer outra posição
+	    return livres.get((int)(Math.random() * livres.size()));
+	}
+
+	
+	private int posicaoFacil() {
+		ArrayList<Integer> livres = getPosicoesDisponiveis();
+    	int escolhido = livres.get((int)(Math.random() * livres.size()));
+    	return escolhido;
+	}
+	
+	public void reiniciar() {
+		iniciarTabuleiro();
+		jogando = false;
+		quantidadeJogadas = 0;
+	}
+	
+	public boolean terminou() {
+		return (getResultado() != -1); //se nao houve ganho ou empate
+	}
+
+	public boolean isJogando() {
+		boolean algumaCelulaPreenchida = getPosicoesDisponiveis().size() != 9;
+		return jogando && algumaCelulaPreenchida;
+	}
+	
 	public int getResultado() {
 		// pra nao usar matriz...
 		// ia fazer um 8 listas mas com esse tanto de if acho q seria mais eficiente do que ter que criar arrau
@@ -81,7 +187,6 @@ public class JogoDaVelha {
 		// verificações por linha/coluna/diagonal - n sei se esse tanto de if seria a melhor forma alvez uma funcao seria melhrp
 		// supor q simbolo1 = X so p eu testar mentalmente
 		if (celulas[0] != ' ' && celulas[0] == celulas[1] && celulas[0] == celulas[2]) {
-			System.out.println("entrou aqui");
 			return celulas[0] == simbolos[0] ? 1:2; // se X = X == Jogador 1 vence se nao Joagdor 2
 		}
 		if (celulas[3] != ' ' && celulas[3] == celulas[4] && celulas[3] == celulas[5])
@@ -107,9 +212,6 @@ public class JogoDaVelha {
 		return -1;
 	}
 	
-	private Character getSimbolo(int numeroJogador) {
-		return simbolos[numeroJogador];
-	}
 	
 	// classe stringbuilder eu nao conhecia
 	public String getFoto() {
@@ -125,25 +227,16 @@ public class JogoDaVelha {
 		return sb.toString(); // tinha esquecido de converter p strig pq sao dois tipos difernetss
 	}
 
-
-
-	public ArrayList<Integer> getPosicoesDisponiveis() {
-		ArrayList<Integer> livres = new ArrayList<>();
-		for (int i = 0; i < celulas.length; i++) {
-			if (celulas[i] == ' ') {
-				livres.add(i);
-			}
-		}
-		return livres;
+	public Character getSimbolo(int numeroJogador) {
+		return simbolos[numeroJogador];
 	}
 
-	//acho q poderia usar stringbuilder aqui tbm mas vou no simples dessa vez
-	public String exibirHistorico() {
-		String resultado = "";
-		// pcada input do mapa historico, get a key e o value
-		for (var entrada : historico.entrySet()) { // p cada entrada um par posicao e valor
-			resultado += "Posição " + entrada.getKey() + ": " + entrada.getValue() + "\n";
-		}
-		return resultado;
+	private void iniciarTabuleiro() {
+		for (int i = 0; i < 9; i++) this.celulas[i] = ' ';
 	}
+
+
+	
+	
+	
 }
