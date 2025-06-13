@@ -180,15 +180,16 @@ public class AplicacaoJM extends JFrame {
 
     private void preencherCelula(JButton cell, int pos) throws Exception {
         boolean vezDaMaquina = ordem % 2 != 0;
-        if (vezDaMaquina) jogoDaVelha.jogarMaquina(pos);
-        else jogoDaVelha.jogarJogador(pos);
+        if (!vezDaMaquina) {
+        	jogoDaVelha.jogaJogador(pos);
+        }
         cell.setText(jogoDaVelha.getSimbolo(vezDaMaquina ? 2 : 1).toString());
         ordem++;
     }
 
     private void jogarMaquina() throws Exception {
         if (ordem % 2 != 0) {
-            int escolhido = jogoDaVelha.maquinaEscolherPosicao();
+            int escolhido = jogoDaVelha.jogaMaquina();
             preencherCelula(botoes[escolhido], escolhido);
         }
     }

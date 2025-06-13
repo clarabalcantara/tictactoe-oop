@@ -119,7 +119,7 @@ public class AplicacaoJJ extends JFrame {
 
     private void preencherCelula(JButton cell, int pos) throws Exception {
         int jogador = ordem % 2 == 0 ? 1 : 2;
-        jogoDaVelha.jogarJogador(jogador, pos);
+        jogoDaVelha.jogaJogador(jogador, pos);
         cell.setText(jogoDaVelha.getSimbolo(jogador).toString());
         ordem++;
         atualizarLblJogador();

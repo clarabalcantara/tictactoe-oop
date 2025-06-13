@@ -53,21 +53,28 @@ public class JogoDaVelha {
         return simbolos[--numeroJogador];
     }
 
-    public void jogarJogador(int posicao) throws Exception {
+    public void jogaJogador(int posicao) throws Exception {
         if (!contraMaquina) {
             throw new Exception("Este método é para jogo contra a máquina.");
         }
-        jogarJogador(1, posicao); // Jogador 1 (X)
+        jogaJogador(1, posicao); // Jogador 1 (X)
+    }
+    // feito
+    public int getTotalJogadas() {
+    	return quantidadeJogadas;
+    }                
+    
+    public int jogaMaquina(){
+        int posicao = maquinaEscolherPosicao();
+        try {
+            jogaJogador(2, posicao); // Jogador 2 (O)
+            } catch(Exception e){	
+            }
+            	return posicao;
+        
     }
 
-    public void jogarMaquina(int posicao) throws Exception {
-        if (!contraMaquina) {
-            throw new Exception("Este método é para jogo contra a máquina.");
-        }
-        jogarJogador(2, posicao); // Jogador 2 (O)
-    }
-
-    public void jogarJogador(int numeroJogador, int posicao) throws Exception {
+    public void jogaJogador(int numeroJogador, int posicao) throws Exception {
         if (numeroJogador < 1 || numeroJogador > 2 || posicao < 0 || posicao >= 9 || celulas[posicao] != ' ') {
             throw new Exception("Jogada inválida.");
         }
