@@ -14,6 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
 
+/*
+AplicacaoJM.java
+//Alunos: Davi César M. Leite  e Clara Brito P. N. Alcântara 
+Data: 13/06/2025
+Descrição: Classe que gerencia a interface gráfica de jogador x maquina
+*/
 public class AplicacaoJM extends JFrame {
     private final JogoDaVelha jogoDaVelha;
     private static final long serialVersionUID = 1L;
@@ -36,19 +42,30 @@ public class AplicacaoJM extends JFrame {
     }
 
     public AplicacaoJM() {
-        String nomeJogador = solicitarNomeJogador();
+        String simboloJogador = solicitarNomeJogador();
         int nivel = configurarDificuldade();
-
-        jogoDaVelha = new JogoDaVelha(nomeJogador, nivel);
+        jogoDaVelha = new JogoDaVelha(simboloJogador, nivel);
         configurarJanela();
         configurarHeader();
         configurarBotoes();
     }
 
     private String solicitarNomeJogador() {
-        String nomeJogador = JOptionPane.showInputDialog("Qual o nome do jogador?");
-        if (nomeJogador == null || nomeJogador.isBlank()) System.exit(0);
-        return nomeJogador;
+    	String nomeJogador;
+        
+        while (true) {
+            nomeJogador = JOptionPane.showInputDialog("Qual símbolo quer usar? (Digite apenas um caractere)");
+
+            if (nomeJogador == null || nomeJogador.isBlank()) {
+                System.exit(0);
+            }
+
+            if (nomeJogador.length() == 1) {
+                return nomeJogador;
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, insira apenas um caractere.");
+            }
+        }
     }
 
     private int configurarDificuldade() {
@@ -73,7 +90,7 @@ public class AplicacaoJM extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setBounds(100, 100, 450, 300);
-        setSize(420, 500);
+        setSize(420, 540);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(192, 97, 203));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -95,6 +112,8 @@ public class AplicacaoJM extends JFrame {
         replayBtn.addActionListener(e -> reiniciar());
         header.setLayout(null);
         header.add(replayBtn);
+        configurarDificuldadeSlider(header);
+        
         // config botao historico
         historicoBtn.setBounds(210, 50, 154, 33);
         historicoBtn.setFont(new Font("Arial", Font.BOLD, 16));
@@ -111,28 +130,28 @@ public class AplicacaoJM extends JFrame {
     }
 
     private void configurarDificuldadeSlider(JPanel header) {
+    }
+
+    private void configurarBotoes() {
+        JPanel buttons = new JPanel();
+        buttons.setBounds(12, 170, 382, 323);
+        contentPane.add(buttons);
+        buttons.setLayout(new GridLayout(3, 3, 0, 0));
         JLabel dificuldadeLbl = new JLabel("Dificuldade: ");
+        dificuldadeLbl.setBounds(25, 123, 177, 25);
+        contentPane.add(dificuldadeLbl);
         dificuldadeLbl.setFont(new Font("Arial", Font.BOLD, 16));
         dificuldadeLbl.setForeground(Color.WHITE);
-        dificuldadeLbl.setBounds(20, 70, 177, 25);
-        header.add(dificuldadeLbl);
-
+        
         JSlider dificuldadeSlider = new JSlider(1, 2, jogoDaVelha.getDificuldade());
-        dificuldadeSlider.setBounds(210, 58, 156, 48);
+        dificuldadeSlider.setBounds(212, 111, 169, 48);
+        contentPane.add(dificuldadeSlider);
         dificuldadeSlider.setMajorTickSpacing(1);
         dificuldadeSlider.setPaintTicks(true);
         dificuldadeSlider.setPaintLabels(true);
         dificuldadeSlider.setSnapToTicks(true);
         dificuldadeSlider.setBackground(new Color(192, 97, 203));
         dificuldadeSlider.addChangeListener(e -> jogoDaVelha.setDificuldade(dificuldadeSlider.getValue()));
-        header.add(dificuldadeSlider);
-    }
-
-    private void configurarBotoes() {
-        JPanel buttons = new JPanel();
-        buttons.setBounds(12, 127, 382, 323);
-        contentPane.add(buttons);
-        buttons.setLayout(new GridLayout(3, 3, 0, 0));
 
         for (int i = 0; i < 9; i++) {
             buttons.add(criarBotao(i));
@@ -175,12 +194,12 @@ public class AplicacaoJM extends JFrame {
     }
 
     private boolean verificarFimDeJogo() {
-        if (!jogoDaVelha.isJogando()) {
+        if (jogoDaVelha.terminou()) {
             toggleBotoes();
             replayBtn.setEnabled(true);
             int result = jogoDaVelha.getResultado();
             String vencedor = switch (result) {
-                case 1 -> jogoDaVelha.getNomeJogador() + " venceu!";
+                case 1 -> "Jogador venceu!";
                 case 2 -> "Máquina venceu.";
                 default -> "Empate.";
             };
