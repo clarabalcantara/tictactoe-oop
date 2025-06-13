@@ -3,31 +3,35 @@ package tictactoe_oop;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+
+/*
+JogoDaVelha.java
+//Alunos: Davi César M. Leite  e Clara Brito P. N. Alcântara 
+Data: 13/06/2025
+Descrição: Gerencia a lógica principal do jogo da velha
+*/
 public class JogoDaVelha {
     private Character[] celulas = new Character[9]; // Tabuleiro 3x3
     private Character[] simbolos = new Character[2]; // 'X' ou 'O'
     private LinkedHashMap<Integer, Character> historico = new LinkedHashMap<>(); // Histórico de jogadas
     private int quantidadeJogadas = 0; // Se == 9, é empate
     private boolean contraMaquina = false;
-    private boolean jogando = false;
-    private String nomeJogador = "";
     private int nivelEsperteza; // 1 ou 2
 
-    public JogoDaVelha(Character simbolo1, Character simbolo2) {
-        if (simbolo1 == ' ' || simbolo2 == ' ') {
+    public JogoDaVelha(String simbolo1, String simbolo2) {
+        if (simbolo1.isBlank() || simbolo2.isBlank()) {
             throw new IllegalArgumentException("Símbolos não podem ser espaços em branco.");
         }
-        this.simbolos[0] = simbolo1;
-        this.simbolos[1] = simbolo2;
+        this.simbolos[0] = simbolo1.charAt(0);
+        this.simbolos[1] = simbolo2.charAt(0);
         iniciarTabuleiro();
     }
 
-    public JogoDaVelha(String nomeJogador1, int nivel) {
-        this.simbolos[0] = 'X';
+    public JogoDaVelha(String simboloJogador1, int nivel) {
+        this.simbolos[0] = simboloJogador1.charAt(0);
         this.simbolos[1] = 'M';
         this.contraMaquina = true;
         this.nivelEsperteza = nivel;
-        this.nomeJogador = nomeJogador1;
         iniciarTabuleiro();
     }
 
@@ -40,14 +44,10 @@ public class JogoDaVelha {
     	return this.nivelEsperteza;
     }
 
-    public String getNomeJogador() {
-        return this.nomeJogador;
-    }
     // metodo p retornar historioc
     public LinkedHashMap<Integer, Character> getHistorico() {
         return historico;
     }
-
 
     public Character getSimbolo(int numeroJogador) {
         return simbolos[--numeroJogador];
@@ -68,8 +68,6 @@ public class JogoDaVelha {
     }
 
     public void jogarJogador(int numeroJogador, int posicao) throws Exception {
-        if (!isJogando()) jogando = true;
-
         if (numeroJogador < 1 || numeroJogador > 2 || posicao < 0 || posicao >= 9 || celulas[posicao] != ' ') {
             throw new Exception("Jogada inválida.");
         }
@@ -78,10 +76,6 @@ public class JogoDaVelha {
         celulas[posicao] = getSimbolo(numeroJogador);
         historico.put(posicao, getSimbolo(numeroJogador)); // Armazena o histórico
         quantidadeJogadas++;
-
-        if (terminou()) {
-            jogando = false;
-        }
     }
 
     public ArrayList<Integer> getPosicoesDisponiveis() {
@@ -94,7 +88,7 @@ public class JogoDaVelha {
         return livres;
     }
 
-    public String exibirTabuleiro() {
+    public String getFoto() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 9; i++) {
             sb.append(celulas[i] == ' ' ? ' ' : celulas[i]);
@@ -160,7 +154,6 @@ public class JogoDaVelha {
 
     public void reiniciar() {
         iniciarTabuleiro();
-        jogando = false;
         quantidadeJogadas = 0;
     }
 
@@ -168,9 +161,6 @@ public class JogoDaVelha {
         return getResultado() != -1; // -1 = jogo não terminou
     }
 
-    public boolean isJogando() {
-        return jogando && getPosicoesDisponiveis().size() > 0;
-    }
 
     public int getResultado() {
 		// pra nao usar matriz...

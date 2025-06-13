@@ -11,6 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+/*
+AplicacaoJJ.java
+//Alunos: Davi César M. Leite  e Clara Brito P. N. Alcântara 
+Data: 13/06/2025
+Descrição: Classe que gerencia a interface gráfica de jogador x jogador
+*/
 public class AplicacaoJJ extends JFrame {
     private final JogoDaVelha jogoDaVelha;
     private static final long serialVersionUID = 1L;
@@ -33,7 +39,7 @@ public class AplicacaoJJ extends JFrame {
     }
 
     public AplicacaoJJ() {
-        jogoDaVelha = new JogoDaVelha('X', 'O');
+        jogoDaVelha = new JogoDaVelha("X", "O");
         configurarJanela();
         configurarHeader();
         configurarBotoes();
@@ -125,7 +131,7 @@ public class AplicacaoJJ extends JFrame {
     }
 
     private void verificarFimDeJogo() {
-        if (!jogoDaVelha.isJogando()) {
+        if (jogoDaVelha.terminou()) {
             toggleBotoes();
             replayBtn.setEnabled(true);
             int resultado = jogoDaVelha.getResultado();
