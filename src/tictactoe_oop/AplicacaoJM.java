@@ -20,6 +20,7 @@ public class AplicacaoJM extends JFrame {
     private int ordem = 0;
     private final JButton[] botoes = new JButton[9];
     private final JButton replayBtn = new JButton("Jogar denovo");
+    private final JButton historicoBtn = new JButton("Histórico");
     private JLabel jogandoLbl = new JLabel("Jogando...");
     private JPanel contentPane;
 
@@ -83,9 +84,8 @@ public class AplicacaoJM extends JFrame {
     private void configurarHeader() {
         JPanel header = new JPanel();
         header.setBackground(new Color(192, 97, 203));
-        header.setBounds(12, 10, 376, 106);
+        header.setBounds(12, 10, 376, 90); 
         contentPane.add(header);
-        header.setLayout(null);
 
         replayBtn.setBounds(210, 14, 154, 33);
         replayBtn.setFont(new Font("Arial", Font.BOLD, 16));
@@ -93,15 +93,21 @@ public class AplicacaoJM extends JFrame {
         replayBtn.setForeground(Color.WHITE);
         replayBtn.setEnabled(false);
         replayBtn.addActionListener(e -> reiniciar());
+        header.setLayout(null);
         header.add(replayBtn);
+        // config botao historico
+        historicoBtn.setBounds(210, 50, 154, 33);
+        historicoBtn.setFont(new Font("Arial", Font.BOLD, 16));
+        historicoBtn.setBackground(new Color(220, 138, 221));
+        historicoBtn.setForeground(Color.WHITE);
+        historicoBtn.addActionListener(e -> mostrarHistorico());
+        header.add(historicoBtn);
 
         jogandoLbl.setBackground(new Color(192, 97, 203));
         jogandoLbl.setForeground(Color.WHITE);
         jogandoLbl.setFont(new Font("Arial", Font.BOLD, 16));
-        jogandoLbl.setBounds(20, 22, 180, 17);
+        jogandoLbl.setBounds(12, 22, 180, 17);
         header.add(jogandoLbl);
-
-        configurarDificuldadeSlider(header);
     }
 
     private void configurarDificuldadeSlider(JPanel header) {
@@ -200,4 +206,14 @@ public class AplicacaoJM extends JFrame {
         ordem = 0;
         jogandoLbl.setText("Jogando...");
     }
+    private void mostrarHistorico() {
+    	
+        String hist = "";
+        for (Integer pos : jogoDaVelha.getHistorico().keySet()) {
+            hist += "Posição " + pos + ": " + jogoDaVelha.getHistorico().get(pos) + "\n";
+        }
+        JOptionPane.showMessageDialog(this, hist, "Histórico de Jogadas", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }
+

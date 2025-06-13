@@ -43,6 +43,11 @@ public class JogoDaVelha {
     public String getNomeJogador() {
         return this.nomeJogador;
     }
+    // metodo p retornar historioc
+    public LinkedHashMap<Integer, Character> getHistorico() {
+        return historico;
+    }
+
 
     public Character getSimbolo(int numeroJogador) {
         return simbolos[--numeroJogador];

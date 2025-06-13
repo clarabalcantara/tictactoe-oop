@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -16,6 +17,7 @@ public class AplicacaoJJ extends JFrame {
     private int ordem = 0;
     private final JButton[] botoes = new JButton[9];
     private final JButton replayBtn = new JButton("Jogar denovo");
+    private final JButton historicoBtn = new JButton("Histórico");
     private JLabel jogandoLbl = new JLabel();
     private JPanel contentPane;
 
@@ -42,7 +44,7 @@ public class AplicacaoJJ extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setBounds(100, 100, 450, 300);
-        setSize(420, 450);
+        setSize(420, 480);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(192, 97, 203));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -53,7 +55,7 @@ public class AplicacaoJJ extends JFrame {
     private void configurarHeader() {
         JPanel header = new JPanel();
         header.setBackground(new Color(192, 97, 203));
-        header.setBounds(12, 10, 376, 55);
+        header.setBounds(12, 10, 376, 90); 
         contentPane.add(header);
 
         replayBtn.setBounds(210, 14, 154, 33);
@@ -64,6 +66,13 @@ public class AplicacaoJJ extends JFrame {
         replayBtn.addActionListener(e -> reiniciar());
         header.setLayout(null);
         header.add(replayBtn);
+        // config botao historico
+        historicoBtn.setBounds(210, 50, 154, 33);
+        historicoBtn.setFont(new Font("Arial", Font.BOLD, 16));
+        historicoBtn.setBackground(new Color(220, 138, 221));
+        historicoBtn.setForeground(Color.WHITE);
+        historicoBtn.addActionListener(e -> mostrarHistorico());
+        header.add(historicoBtn);
 
         jogandoLbl.setBackground(new Color(192, 97, 203));
         jogandoLbl.setForeground(Color.WHITE);
@@ -74,7 +83,7 @@ public class AplicacaoJJ extends JFrame {
 
     private void configurarBotoes() {
         JPanel buttons = new JPanel();
-        buttons.setBounds(12, 76, 382, 323);
+        buttons.setBounds(12, 120, 389, 300); 
         contentPane.add(buttons);
         buttons.setLayout(new GridLayout(3, 3, 0, 0));
 
@@ -141,4 +150,13 @@ public class AplicacaoJJ extends JFrame {
         ordem = 0;
         atualizarLblJogador();
     }
+    private void mostrarHistorico() {
+    	
+        String hist = "";
+        for (Integer pos : jogoDaVelha.getHistorico().keySet()) {
+            hist += "Posição " + pos + ": " + jogoDaVelha.getHistorico().get(pos) + "\n";
+        }
+        JOptionPane.showMessageDialog(this, hist, "Histórico de Jogadas", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }
